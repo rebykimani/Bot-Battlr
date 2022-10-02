@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react/cjs/react.production.min";
+import { Link } from "react-router-dom";
 
 const botTypeClasses = {
   Assault: "icon military",
@@ -9,13 +11,14 @@ const botTypeClasses = {
   Captain: "icon star",
 };
 
-function BotCard({ bot }) {
+function BotCard({ bot, handleClick, deleteHandler }) {
+
   return (
     <div className="ui column">
       <div
         className="ui card"
         key={bot.id}
-        onClick={() => console.log("add code to connect event listener")}
+        onClick={(handleClick)}
       >
         <div className="image">
           <img alt="oh no!" src={bot.avatar_url} />
@@ -26,7 +29,7 @@ function BotCard({ bot }) {
             <i className={botTypeClasses[bot.bot_class]} />
           </div>
           <div className="meta text-wrap">
-            <small>{bot.catchphrase}</small>
+            <small>{bot.catchphrase.stringfy(0,32)}</small>
           </div>
         </div>
         <div className="extra content">
@@ -45,11 +48,13 @@ function BotCard({ bot }) {
           </span>
           <span>
             <div className="ui center aligned segment basic">
-              <button
+              <button 
+              title="Remove this bot from display"
                 className="ui mini red button"
-                onClick={() =>
-                  console.log("add code to connect event listener")
-                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteHandler(bot);
+                }}
               >
                 x
               </button>
